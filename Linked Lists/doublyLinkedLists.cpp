@@ -4,28 +4,42 @@ using namespace std;
 
 struct Node{
     int value;
+    Node* prev;
     Node* next;
 };
 
-class SinglyLinkedLists{
+class DoublyLinkedList{
 private:
     Node* root;
 
     Node* newNode(int value){
         Node* node = new Node();
+
         node->value = value;
+        node->prev = nullptr;
         node->next = nullptr;
 
         return node;
-    };
-
+    }
 public:
-    SinglyLinkedLists(){
+    DoublyLinkedList(){
         this->root = nullptr;
     }
 
-    SinglyLinkedLists(int value){
+    DoublyLinkedList(int value){
         this->root = newNode(value);
+    }
+
+    void insertAtHead(int value){
+        Node* node = newNode(value);
+        if (this->root == nullptr){
+            this->root = node;
+        }
+        else {
+            node->next = this->root;
+            this->root->prev = node;
+            this->root = node;
+        }
     }
 
     void insertAtBack(int value){
@@ -39,18 +53,7 @@ public:
                 current = current->next;
             }
             current->next = node;
-        }
-    }
-
-    void insertAtHead(int value){
-        Node* node = newNode(value);
-        if (this->root == nullptr){
-            this->root = node;
-        }
-        else{
-            Node* temp = this->root;
-            node->next = temp;
-            this->root = node;
+            node->prev = current;
         }
     }
 
@@ -76,34 +79,35 @@ public:
             cout << current->value << " -> ";
             current = current->next;
         }
-        cout << "Print successfully" << endl;
+        cout << "nullptr" << endl;
     }
-
-    ~SinglyLinkedLists(){
+    
+    ~DoublyLinkedList(){
         Node* current = this->root;
-        while(current->next != nullptr){
+        while (current != nullptr){
             Node* temp = current;
             current = current->next;
             delete temp;
         }
-        cout << "\nSingly linked list removed from memory!" << endl;
+        cout << "\nDoubly linked list removed from memory!" << endl;
     }
-
 };
 
 int main(){
-    SinglyLinkedLists singlyLinkedLists;
+    DoublyLinkedList dll;
 
-    singlyLinkedLists.insertAtHead(3);
-    singlyLinkedLists.insertAtBack(2);
-    singlyLinkedLists.insertAtBack(99);
-    singlyLinkedLists.insertAtBack(14);
-    singlyLinkedLists.insertAtHead(100);
-    singlyLinkedLists.print();
+    dll.insertAtBack(12);
+    dll.insertAtHead(312);
+    dll.insertAtHead(522);
+    dll.insertAtBack(31231);
+    dll.insertAtBack(1);
+    dll.insertAtHead(5);
+    dll.print();
 
-    singlyLinkedLists.sort();
-    singlyLinkedLists.print();
+    dll.sort();
+    dll.print();
+    
+    dll.~DoublyLinkedList();
 
-    singlyLinkedLists.~SinglyLinkedLists();
     return 0;
 }
